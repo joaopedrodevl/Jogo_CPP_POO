@@ -6,14 +6,16 @@
 #include "../ASCII_Engine/ObjetoDeJogo.hpp"
 #include "../include/Item.hpp"
 
-class Heroi : public ObjetoDeJogo
+#include "../include/Entidade.hpp"
+
+class Heroi : public Entidade
 {
 private:
     int vida;
     int ataque;
     int defesa;
 public:
-    Heroi(const ObjetoDeJogo &obj, int vida=100, int ataque = 40, int defesa = 25) : ObjetoDeJogo(obj), vida(vida), ataque(ataque), defesa(defesa) {};
+    Heroi(const ObjetoDeJogo &obj, int vida = 100, int ataque = 40, int defesa = 25) : Entidade(obj, obj.getName(), ataque, defesa, vida), vida(vida), ataque(ataque), defesa(defesa) {};
     virtual ~Heroi();
 
     int atacar() {
@@ -24,10 +26,8 @@ public:
     };
 
     void foiAtacado(int dano) {
-        this->vida = (vida - dano + defesa >= 0) ? (vida - dano + defesa) : 0;
-    }
-
-    void usarItem();
+        this->vida = (vida - dano + defesa >= 0) ? (vida - dano + (defesa / 10)) : 0;
+    };
 
     int getVida() {
         return vida;
@@ -68,6 +68,7 @@ public:
     void setDefesa(int defesa) {
         this->defesa = this->defesa + defesa;
     };
+    
 };
 
 #endif

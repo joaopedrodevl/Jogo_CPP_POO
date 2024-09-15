@@ -6,6 +6,7 @@
 #include <list>
 
 #include "Heroi.hpp"
+#include "Inimigo.hpp"
 
 class Fase1 : public Fase
 {
@@ -15,11 +16,11 @@ private:
     TextSprite *vida;
 
     Heroi *heroi;
-
+    Inimigo *inimigos[2];
     std::list<ObjetoDeJogo*> colisoes;
 public:
-    Fase1(std::string name, const Sprite &bkg) : Fase(name, bkg) {}
-    Fase1(std::string name, const SpriteAnimado &bkg) : Fase(name, bkg) {}
+    Fase1(std::string name, const Sprite &bkg, std::string dificuldade) : Fase(name, bkg) {}
+    Fase1(std::string name, const SpriteAnimado &bkg, std::string dificuldade) : Fase(name, bkg) {}
     virtual ~Fase1();
 
     virtual void init();
