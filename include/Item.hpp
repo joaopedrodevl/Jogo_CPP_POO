@@ -1,27 +1,53 @@
 #ifndef ITEM_HPP
 #define ITEM_HPP
 
-#include "./Heroi.hpp"
 #include <string>
 
 #include "../ASCII_Engine/ObjetoDeJogo.hpp"
 
 class Item : public ObjetoDeJogo
 {
-private:
-    std::string nome;
+protected:
+    int valor;
     std::string tipo;
     bool usado;
     bool eConsumivel;
-
+    bool coletado;
 public:
-    Item(const ObjetoDeJogo &obj, std::string nome, std::string tipo) : ObjetoDeJogo(obj), nome(nome), tipo(tipo), usado(false) {};
+    Item(const ObjetoDeJogo &obj, std::string tipo, int valor = 0) : ObjetoDeJogo(obj), tipo(tipo), valor(valor), usado(false), eConsumivel(false) {};
     virtual ~Item();
 
-    bool operator==(const Item &other) const
-    {
-        return (nome == other.nome) && (tipo == other.tipo) && (usado == other.usado) && (eConsumivel == other.eConsumivel);
-    }
+    std::string getTipo() {
+        return tipo;
+    };
+
+    bool getUsado() {
+        return usado;
+    };
+
+    void setUsado(bool usado) {
+        this->usado = usado;
+    };
+
+    bool getEConsumivel() {
+        return eConsumivel;
+    };
+
+    void setEConsumivel(bool eConsumivel) {
+        this->eConsumivel = eConsumivel;
+    };
+
+    int getValor() {
+        return valor;
+    };
+
+    void setColetado(bool coletado) {
+        this->coletado = coletado;
+    };
+
+    bool getColetado() {
+        return coletado;
+    };
 };
 
 #endif // ITEM_HPP

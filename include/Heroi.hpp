@@ -5,7 +5,7 @@
 
 #include "../ASCII_Engine/ObjetoDeJogo.hpp"
 #include "../include/Item.hpp"
-
+#include "../include/Inventario.hpp"
 #include "../include/Entidade.hpp"
 
 class Heroi : public Entidade
@@ -14,61 +14,76 @@ private:
     int vida;
     int ataque;
     int defesa;
+    int vidaMaxima = 250;
+
+    Inventario *inventario;
 public:
-    Heroi(const ObjetoDeJogo &obj, int vida = 100, int ataque = 40, int defesa = 25) : Entidade(obj, obj.getName(), ataque, defesa, vida), vida(vida), ataque(ataque), defesa(defesa) {};
+    Heroi(const ObjetoDeJogo &obj, int vida = 250, int ataque = 40, int defesa = 45, Inventario *inventario = new Inventario()) : Entidade(obj, obj.getName(), ataque, defesa, vida), vida(vida), ataque(ataque), defesa(defesa), inventario(inventario) {};
     virtual ~Heroi();
 
-    int atacar() {
+    int atacar()
+    {
         return ataque;
     };
-    int defender() {
+    int defender()
+    {
         return defesa;
     };
 
-    void foiAtacado(int dano) {
+    void foiAtacado(int dano)
+    {
         this->vida = (vida - dano + defesa >= 0) ? (vida - dano + (defesa / 10)) : 0;
     };
 
-    int getVida() {
+    int getVida()
+    {
         return vida;
     };
 
-    int getAtaque() {
+    int getAtaque()
+    {
         return ataque;
     };
 
-    int getDefesa() {
+    int getDefesa()
+    {
         return defesa;
     };
 
-    // bool addItem(Item item) {
-    //     if (inventario.size() < 10) {
-    //         inventario.push_back(item);
-    //         return true;
-    //     }
-    //     return false;
-    // };
+    void usarItem(Item &item) {
+        if (item.getTipo() == "cura") {
+            vida = (vida + item.getValor() <= vidaMaxima) ? vida + item.getValor() : vidaMaxima;
+        }
+    }
 
-    // void removeItem(Item item) {
-    //     inventario.remove(item);
-    // };
-
-    bool estaVivo() {
+    bool estaVivo()
+    {
         return vida > 0;
     };
 
-    void setVida(int vida) {
-        this->vida = this->vida + vida;
+    void setVida(int vida)
+    {
+        this->vida = vida;
     };
 
-    void setAtaque(int ataque) {
+    void setAtaque(int ataque)
+    {
         this->ataque = this->ataque + ataque;
     };
 
-    void setDefesa(int defesa) {
+    void setDefesa(int defesa)
+    {
         this->defesa = this->defesa + defesa;
     };
-    
+
+    Inventario *getInventario()
+    {
+        return inventario;
+    };
+
+    int getVidaMaxima() {
+        return vidaMaxima;
+    }
 };
 
 #endif

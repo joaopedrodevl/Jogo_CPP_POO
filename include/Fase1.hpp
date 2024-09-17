@@ -7,6 +7,12 @@
 
 #include "Heroi.hpp"
 #include "Inimigo.hpp"
+#include "Item.hpp"
+#include "Inventario.hpp"
+#include "Chave.hpp"
+#include "Bau.hpp"
+#include "Cura.hpp"
+#include "Reliquia.hpp"
 
 class Fase1 : public Fase
 {
@@ -15,8 +21,21 @@ private:
 
     TextSprite *vida;
 
+    Reliquia *reliquia;
+
+    Bau *bau;
+
     Heroi *heroi;
-    Inimigo *inimigos[2];
+    int MAX_INIMIGOS = 4;
+    Inimigo *inimigos[4];
+
+    Inventario *inventario;
+    TextSprite *inv;
+    Chave *chave;
+    Cura *cura;
+
+    TextSprite *msg;
+
     std::list<ObjetoDeJogo*> colisoes;
 public:
     Fase1(std::string name, const Sprite &bkg, std::string dificuldade) : Fase(name, bkg) {}
@@ -27,6 +46,10 @@ public:
     virtual unsigned run(SpriteBuffer &screen);
 
     bool colideComBloco() const;
+
+    int getMAX_INIMIGOS() const {
+        return MAX_INIMIGOS;
+    }
 };
 
 

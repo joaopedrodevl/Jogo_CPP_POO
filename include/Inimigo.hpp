@@ -54,7 +54,6 @@ public:
 
     void foiAtacado(int dano) {
         this->vida = (vida - this->atacar() + this->defender() >= 0) ? (vida - this->atacar() + (this->defender() / 10)) : 0;
-        std::cout << this->vida;
     }
 
     bool estaVivo() {

@@ -15,9 +15,7 @@ public:
     static void run() {
         SpriteBuffer buffer(150, 47);
 
-        std::cout << "AAA" << std::endl;
         Fase1 fase1("Fase1", Sprite("./sprites/paredes/fase1/fase.txt"), "facil");
-        std::cout << "BBB" << std::endl;
 
         fase1.init();
         int ret1 = fase1.run(buffer);
