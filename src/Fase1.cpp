@@ -8,17 +8,16 @@
 
 void Fase1::init()
 {
-    reliquia = new Reliquia(ObjetoDeJogo("Reliquia", Sprite("./sprites/reliquia.txt"), 10, 80), "reliquia", 0);
+    reliquia = new Reliquia(ObjetoDeJogo("Relíquia Ruínas", Sprite("./sprites/reliquia.txt"), 10, 80), "Relíquia ruínas", 0);
     objs.push_back(reliquia);
     reliquia->desativarObj();
-    
+
     cura = new Cura(ObjetoDeJogo("Cura", Sprite("./sprites/cura.txt"), 42, 70), "cura", 100);
     objs.push_back(cura);
 
     bau = new Bau(ObjetoDeJogo("Bau", Sprite("./sprites/bau.txt"), 10, 120));
     objs.push_back(bau);
 
-    inventario = new Inventario();
     objs.push_back(new ObjetoDeJogo("Inventario", TextSprite("[]"), 2, 27));
     SpriteBase *tmp2 = const_cast<SpriteBase *>(objs.back()->getSprite());
     inv = dynamic_cast<TextSprite *>(tmp2);
@@ -40,14 +39,13 @@ void Fase1::init()
     inimigos[2] = new Inimigo(ObjetoDeJogo("boss", SpriteAnimado("./sprites/boss-adormecido.anm", 3), 10, 80), "boss", "boss", 50, 20, 20, true);
     objs.push_back(inimigos[2]);
 
-    inimigos[3] = new Inimigo(ObjetoDeJogo("boss", SpriteAnimado("./sprites/boss.anm", 3), 10, 80), "boss", "boss", 100, 20, 20, true);
+    inimigos[3] = new Inimigo(ObjetoDeJogo("boss", SpriteAnimado("./sprites/boss.anm", 3), 10, 80), "boss", "boss", 100, 20, 20, false);
     objs.push_back(inimigos[3]);
     inimigos[3]->desativarObj();
 
-    heroi = new Heroi(ObjetoDeJogo("Heroi", SpriteAnimado("./sprites/heroi.txt", 3), 42, 33), 250, 40, 45, inventario);
-    objs.push_back(heroi);
+    objs.push_back(this->heroi);
 
-    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("IIIII"), 2, 9));
+    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("III"), 2, 9));
     SpriteBase *tmp = const_cast<SpriteBase *>(objs.back()->getSprite());
     vida = dynamic_cast<TextSprite *>(tmp);
 
@@ -140,8 +138,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
         case 'e':
             for (int i = 0; i < Fase1::getMAX_INIMIGOS(); i++)
             {
-                inimigos[i]->acordar();
-                if (heroi->colideCom(*inimigos[i]))
+                if (heroi->colideComBordas(*inimigos[i]) && !inimigos[i]->estaAdormecido())
                 {
                     inimigos[i]->foiAtacado(heroi->atacar());
 
@@ -173,13 +170,18 @@ unsigned Fase1::run(SpriteBuffer &screen)
                 bau->abrir(chave);
                 msg->setText("O bau foi aberto! Fim da Fase 1!");
                 heroi->getInventario()->removeItem(chave);
-                heroi->getInventario()->removeItem(reliquia);
+                update();
+                draw(screen);
+                system("clear");
+                show(screen);
+                return Fase1::END_GAME;
             }
 
             // Coleta a reliquia
             if (heroi->colideCom(*reliquia))
             {
                 heroi->getInventario()->addItem(reliquia);
+                reliquia->setColetado(true);
                 reliquia->desativarObj();
             }
 
@@ -187,7 +189,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 
         case 'c':
             // Verifica se o heroi tem a cura
-            if (!inventario->itemExiste(*cura))
+            if (!heroi->getInventario()->itemExiste(*cura))
             {
                 msg->setText("Voce nao tem a cura!");
                 break;
@@ -195,7 +197,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
 
             // Usa a cura
             heroi->usarItem(*cura);
-            inventario->removeItem(cura);
+            heroi->getInventario()->removeItem(cura);
             inv->setText(heroi->getInventario()->toString());
             vida->setText(std::to_string(heroi->getVida()));
             break;
@@ -219,34 +221,38 @@ unsigned Fase1::run(SpriteBuffer &screen)
             inimigos[3]->ativarObj();
         }
 
-        for (int i = 0; i < Fase1::getMAX_INIMIGOS(); i++)
-            if (heroi->colideCom(*inimigos[i]) && !inimigos[i]->estaAdormecido())
+        for (int i = 0; i < MAX_INIMIGOS; i++)
+        {
+            if (heroi->colideComBordas(*inimigos[i]) && !inimigos[i]->estaAdormecido())
             {
                 msg->setText("Aperte 'e' para matar o inimigo");
                 heroi->foiAtacado(inimigos[i]->atacar());
-
                 if (!heroi->estaVivo())
-                    return Fase1::END_GAME;
+                {
+                    vida->setText("0");
+                    msg->setText("Game Over!");
+                    update();
+                    draw(screen);
+                    system("clear");
+                    show(screen);
+                    return Fase1::GAME_OVER;
+                }
 
                 vida->setText(std::to_string(heroi->getVida()));
             }
+        }
 
         // Verifica se o boss foi derrotado
         if (!inimigos[3]->estaVivo() && !chave->getColetado() && !reliquia->getColetado())
         {
-            // Ativa a chave
+            msg->setText("Colete a chave e a reliquia!");
             chave->ativarObj();
-            msg->setText("A chave apareceu! Colete-a!");
-
-            // Ativa a reliquia
             reliquia->ativarObj();
-            reliquia->setColetado(true);
-            msg->setText("A reliquia apareceu! Colete-a!");
         }
 
         if (heroi->colideCom(*reliquia) && !reliquia->getColetado())
         {
-            msg->setText("Reliquia coletada! Encontre a chave!");
+            msg->setText("Reliquia coletada! Falta a Chave!");
         }
 
         if (heroi->colideCom(*chave) && !chave->getColetado())

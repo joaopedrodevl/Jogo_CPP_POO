@@ -7,7 +7,6 @@
 class Chave : public Item
 {
 private:
-    
 public:
     Chave(const ObjetoDeJogo &obj, std::string tipo) : Item(obj, tipo) {};
     ~Chave();

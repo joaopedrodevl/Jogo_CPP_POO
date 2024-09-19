@@ -53,7 +53,8 @@ public:
     };
 
     void foiAtacado(int dano) {
-        this->vida = (vida - this->atacar() + this->defender() >= 0) ? (vida - this->atacar() + (this->defender() / 10)) : 0;
+        // A defesa do inimigo é 10% do valor da defesa
+        this->vida = (vida - dano > 0) ? (vida - dano + (defesa / 50)) : 0;
     }
 
     bool estaVivo() {

@@ -32,7 +32,7 @@ public:
 
     void foiAtacado(int dano)
     {
-        this->vida = (vida - dano + defesa >= 0) ? (vida - dano + (defesa / 10)) : 0;
+        this->vida = (vida - dano > 0) ? (vida - dano + (defesa / 50)) : 0;
     };
 
     int getVida()
@@ -83,6 +83,10 @@ public:
 
     int getVidaMaxima() {
         return vidaMaxima;
+    }
+
+    void setVidaMaxima(int vidaMaxima) {
+        this->vidaMaxima = vidaMaxima;
     }
 };
 

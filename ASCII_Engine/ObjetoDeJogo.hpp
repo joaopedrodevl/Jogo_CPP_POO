@@ -35,6 +35,9 @@ public:
 	int getPosL() const {return posL;}
 	int getPosC() const {return posC;}
 	const SpriteBase *getSprite() const {return pSprite;}
+
+	void setPosL(int posL) {this->posL = posL;}
+	void setPosC(int posC) {this->posC = posC;}
 	
 	void ativarObj() {this->active = true;};
 	void desativarObj() {this->active = false;};

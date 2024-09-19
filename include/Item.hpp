@@ -12,7 +12,7 @@ protected:
     std::string tipo;
     bool usado;
     bool eConsumivel;
-    bool coletado;
+    bool coletado = false;
 public:
     Item(const ObjetoDeJogo &obj, std::string tipo, int valor = 0) : ObjetoDeJogo(obj), tipo(tipo), valor(valor), usado(false), eConsumivel(false) {};
     virtual ~Item();
