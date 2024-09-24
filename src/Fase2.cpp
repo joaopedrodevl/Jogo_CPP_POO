@@ -8,13 +8,13 @@
 
 void Fase2::init()
 {
-    heroi->setVidaMaxima(350);
+    heroi->setVidaMaxima(750);
     heroi->moveTo(42, 33);
-    heroi->setVida(350);
+    heroi->setVida(750);
     heroi->setAtaque(40);
     heroi->setDefesa(80);
 
-    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("III"), 2, 9));
+    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("750"), 2, 9));
     SpriteBase *tmp = const_cast<SpriteBase *>(objs.back()->getSprite());
     vida = dynamic_cast<TextSprite *>(tmp);
 
@@ -33,7 +33,7 @@ void Fase2::init()
     SpriteBase *tmp2 = const_cast<SpriteBase *>(objs.back()->getSprite());
     inv = dynamic_cast<TextSprite *>(tmp2);
 
-    reliquia = new Reliquia(ObjetoDeJogo("Relíquia Floresta", Sprite("./sprites/reliquia.txt"), 14, 117), "Relíquia floresta", 0);
+    reliquia = new Reliquia(ObjetoDeJogo("Reliquia Floresta", Sprite("./sprites/reliquia.txt"), 14, 117), "Reliquia floresta", 0);
     objs.push_back(reliquia);
     reliquia->desativarObj();
 
@@ -69,6 +69,67 @@ void Fase2::init()
     inimigos[7]->desativarObj();
 
     objs.push_back(heroi);
+
+    objs.push_back(new ObjetoDeJogo("P1", Sprite("./sprites/paredes/fase2/p1.txt"), 38, 2));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P2", Sprite("./sprites/paredes/fase2/p2.txt"), 38, 90));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P3", Sprite("./sprites/paredes/fase2/p3.txt"), 38, 133));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P4", Sprite("./sprites/paredes/fase2/p4.txt"), 39, 65));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P4C", Sprite("./sprites/paredes/fase2/p4.txt"), 45, 65));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P4A", Sprite("./sprites/paredes/fase2/p4.txt"), 45, 105));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P4B", Sprite("./sprites/paredes/fase2/p4.txt"), 39, 105));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P6", Sprite("./sprites/paredes/fase2/p6.txt"), 34, 21));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P7", Sprite("./sprites/paredes/fase2/p7.txt"), 30, 72));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P8", Sprite("./sprites/paredes/fase2/p8.txt"), 12, 21));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P10", Sprite("./sprites/paredes/fase2/p10.txt"), 23, 23));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P11", Sprite("./sprites/paredes/fase2/p11.txt"), 23, 44));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P12", Sprite("./sprites/paredes/fase2/p12.txt"), 18, 58));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P13", Sprite("./sprites/paredes/fase2/p13.txt"), 29, 72));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P15", Sprite("./sprites/paredes/fase2/p15.txt"), 9, 111));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P16", Sprite("./sprites/paredes/fase2/p16.txt"), 9, 127));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P17", Sprite("./sprites/paredes/fase2/p17.txt"), 22, 127));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P18", Sprite("./sprites/paredes/fase2/p18.txt"), 5, 21));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P19", Sprite("./sprites/paredes/fase2/p19.txt"), 5, 58));
+    colisoes.push_back(objs.back());
+
+    objs.push_back(new ObjetoDeJogo("P20", Sprite("./sprites/paredes/fase2/p20.txt"), 5, 86));
+    colisoes.push_back(objs.back());
+    
 }
 
 unsigned Fase2::run(SpriteBuffer &screen)
@@ -91,7 +152,6 @@ unsigned Fase2::run(SpriteBuffer &screen)
         update();
         ch = getchar();
         int posL = heroi->getPosL(), posC = heroi->getPosC();
-        std::cout << "Posicao: " << posL << " " << posC << std::endl;
 
         switch (ch)
         {
@@ -104,7 +164,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
                 heroi->moveLeft(1);
             break;
         case 's':
-            if (heroi->getPosL() < screen.getAltura() - 4)
+            if (heroi->getPosL() < screen.getAltura() - 5)
                 heroi->moveDown(1);
             break;
         case 'd':
@@ -113,7 +173,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
             break;
         case 'q':
             running = false;
-            return Fase2::END_GAME;
+            return Fase::END_GAME;
             break;
         case 'e':
             // Verifica se o heroi colide com inimigos
@@ -175,13 +235,13 @@ unsigned Fase2::run(SpriteBuffer &screen)
                 draw(screen);
                 system("clear");
                 show(screen);
-                return Fase2::END_GAME;
+                return Fase::LEVEL_COMPLETE;
             }
 
             break;
         case 'c':
             // Verifica se o heroi tem a cura
-            if (!heroi->getInventario()->itemExiste(*cura[0]) && !heroi->getInventario()->itemExiste(*cura[1]))
+            if (!heroi->getInventario()->itemExiste(*cura[0]))
             {
                 msg->setText("Voce nao tem a cura!");
                 break;
@@ -231,7 +291,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
                     draw(screen);
                     system("clear");
                     show(screen);
-                    return Fase2::GAME_OVER;
+                    return Fase::GAME_OVER;
                 }
 
                 vida->setText(std::to_string(heroi->getVida()));

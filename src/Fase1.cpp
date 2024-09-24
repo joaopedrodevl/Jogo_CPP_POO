@@ -8,7 +8,7 @@
 
 void Fase1::init()
 {
-    reliquia = new Reliquia(ObjetoDeJogo("Relíquia Ruínas", Sprite("./sprites/reliquia.txt"), 10, 80), "Relíquia ruínas", 0);
+    reliquia = new Reliquia(ObjetoDeJogo("Reliquia Ruinas", Sprite("./sprites/reliquia.txt"), 10, 80), "Relíquia ruínas", 0);
     objs.push_back(reliquia);
     reliquia->desativarObj();
 
@@ -45,7 +45,7 @@ void Fase1::init()
 
     objs.push_back(this->heroi);
 
-    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("III"), 2, 9));
+    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("250"), 2, 9));
     SpriteBase *tmp = const_cast<SpriteBase *>(objs.back()->getSprite());
     vida = dynamic_cast<TextSprite *>(tmp);
 
@@ -170,11 +170,12 @@ unsigned Fase1::run(SpriteBuffer &screen)
                 bau->abrir(chave);
                 msg->setText("O bau foi aberto! Fim da Fase 1!");
                 heroi->getInventario()->removeItem(chave);
+                heroi->getInventario()->removeItem(cura);
                 update();
                 draw(screen);
                 system("clear");
                 show(screen);
-                return Fase1::END_GAME;
+                return Fase::LEVEL_COMPLETE;
             }
 
             // Coleta a reliquia
@@ -235,7 +236,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
                     draw(screen);
                     system("clear");
                     show(screen);
-                    return Fase1::GAME_OVER;
+                    return Fase::GAME_OVER;
                 }
 
                 vida->setText(std::to_string(heroi->getVida()));
@@ -250,12 +251,12 @@ unsigned Fase1::run(SpriteBuffer &screen)
             reliquia->ativarObj();
         }
 
-        if (heroi->colideCom(*reliquia) && !reliquia->getColetado())
+        if (heroi->colideCom(*reliquia) && reliquia->getColetado())
         {
-            msg->setText("Reliquia coletada! Falta a Chave!");
+            msg->setText("Reliquia coletada!");
         }
 
-        if (heroi->colideCom(*chave) && !chave->getColetado())
+        if (heroi->colideCom(*chave) && chave->getColetado())
         {
             msg->setText("Chave coletada! Encontre o bau!");
         }

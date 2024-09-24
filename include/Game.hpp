@@ -5,6 +5,7 @@
 #include "Fase1.hpp"
 #include "Fase2.hpp"
 #include "Heroi.hpp"
+#include "FaseQuit.hpp"
 
 class Game
 {
@@ -24,27 +25,51 @@ public:
 
             Fase1 fase1("Fase1", Sprite("./sprites/paredes/fase1/fase.txt"), "facil", heroi);
             Fase2 fase2("Fase2", Sprite("./sprites/paredes/fase2/fase.txt"), "medio", heroi);
+            FaseQuit faseQuit("FaseQuit", Sprite("./sprites/paredes/fasequit/fasequit.txt"));
 
             fase1.init();
-            int ret = fase1.run(buffer);
-            if (ret == Fase::END_GAME)
+            int ret1 = fase1.run(buffer);
+            if (ret1 != Fase::GAME_OVER && ret1 != Fase::END_GAME)
             {
-                std::cout << "Parabéns, você venceu a fase 1!" << std::endl;
-
                 buffer.clear();
-
                 fase2.init();
                 int ret2 = fase2.run(buffer);
-                if (ret2 == Fase::END_GAME)
+                if (ret2 != Fase::END_GAME && ret2 != Fase::GAME_OVER)
                 {
-                    std::cout << "Parabéns, você venceu o jogo!" << std::endl;
-                    exit(0);
+                    buffer.clear();
+                    faseQuit.init();
+                    int ret3 = faseQuit.run(buffer);
+                    if (ret3 == Fase::END_GAME)
+                    {
+                        exit(0);
+                    }
                 }
             }
             else
             {
                 std::cout << "Game Over..." << std::endl;
             }
+
+            // fase1.init();
+            // int ret = fase1.run(buffer);
+            // if (ret == Fase::END_GAME)
+            // {
+            //     std::cout << "Parabéns, você venceu a fase 1!" << std::endl;
+
+            //     buffer.clear();
+
+            //     fase2.init();
+            //     int ret2 = fase2.run(buffer);
+            //     if (ret2 == Fase::END_GAME)
+            //     {
+            //         std::cout << "Parabéns, você venceu o jogo!" << std::endl;
+            //         exit(0);
+            //     }
+            // }
+            // else
+            // {
+            //     std::cout << "Game Over..." << std::endl;
+            // }
         }
         catch (const std::exception &e)
         {

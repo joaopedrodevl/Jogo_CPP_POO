@@ -10,9 +10,9 @@ class Inventario
 private:
     std::list<Item*> inventario;
 
-    int maxItens = 5;
+    int maxItens = 6;
 public:
-    Inventario(std::list<Item*> inventario = std::list<Item*>(), int maxItens = 5) : inventario(inventario), maxItens(maxItens) {};
+    Inventario(std::list<Item*> inventario = std::list<Item*>(), int maxItens = 6) : inventario(inventario), maxItens(maxItens) {};
 
     void abrirInventario() {
         for (auto &item : inventario) {
