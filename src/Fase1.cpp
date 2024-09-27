@@ -45,7 +45,7 @@ void Fase1::init()
 
     objs.push_back(this->heroi);
 
-    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("250"), 2, 9));
+    objs.push_back(new ObjetoDeJogo("Vida", TextSprite(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima())), 2, 9));
     SpriteBase *tmp = const_cast<SpriteBase *>(objs.back()->getSprite());
     vida = dynamic_cast<TextSprite *>(tmp);
 
@@ -200,7 +200,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
             heroi->usarItem(*cura);
             heroi->getInventario()->removeItem(cura);
             inv->setText(heroi->getInventario()->toString());
-            vida->setText(std::to_string(heroi->getVida()));
+            vida->setText(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima()));
             break;
 
         default:
@@ -239,7 +239,7 @@ unsigned Fase1::run(SpriteBuffer &screen)
                     return Fase::GAME_OVER;
                 }
 
-                vida->setText(std::to_string(heroi->getVida()));
+                vida->setText(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima()));
             }
         }
 

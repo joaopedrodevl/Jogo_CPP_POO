@@ -17,6 +17,7 @@ private:
     int vidaMaxima = 250;
 
     Inventario *inventario;
+
 public:
     Heroi(const ObjetoDeJogo &obj, int vida = 250, int ataque = 40, int defesa = 45, Inventario *inventario = new Inventario()) : Entidade(obj, obj.getName(), ataque, defesa, vida), vida(vida), ataque(ataque), defesa(defesa), inventario(inventario) {};
     virtual ~Heroi();
@@ -50,8 +51,10 @@ public:
         return defesa;
     };
 
-    void usarItem(Item &item) {
-        if (item.getTipo() == "cura") {
+    void usarItem(Item &item)
+    {
+        if (item.getTipo() == "cura")
+        {
             vida = (vida + item.getValor() <= vidaMaxima) ? vida + item.getValor() : vidaMaxima;
         }
     }
@@ -81,12 +84,24 @@ public:
         return inventario;
     };
 
-    int getVidaMaxima() {
+    int getVidaMaxima()
+    {
         return vidaMaxima;
     }
 
-    void setVidaMaxima(int vidaMaxima) {
+    void setVidaMaxima(int vidaMaxima)
+    {
         this->vidaMaxima = vidaMaxima;
+    }
+
+    std::string vidaEmIs(int vidaAtual, int vidaMaxima)
+    {
+        int numIs = (vidaAtual * 5) / vidaMaxima;
+        if (vidaAtual > 0 && numIs == 0)
+        {
+            numIs = 1;
+        }
+        return std::string(numIs, 'I');
     }
 };
 

@@ -14,7 +14,7 @@ void Fase2::init()
     heroi->setAtaque(40);
     heroi->setDefesa(80);
 
-    objs.push_back(new ObjetoDeJogo("Vida", TextSprite("750"), 2, 9));
+    objs.push_back(new ObjetoDeJogo("Vida", TextSprite(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima())), 2, 9));
     SpriteBase *tmp = const_cast<SpriteBase *>(objs.back()->getSprite());
     vida = dynamic_cast<TextSprite *>(tmp);
 
@@ -241,7 +241,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
             break;
         case 'c':
             // Verifica se o heroi tem a cura
-            if (!heroi->getInventario()->itemExiste(*cura[0]))
+            if (!heroi->getInventario()->itemExiste(*cura[0]) && !heroi->getInventario()->itemExiste(*cura[1]))
             {
                 msg->setText("Voce nao tem a cura!");
                 break;
@@ -255,7 +255,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
                     heroi->usarItem(*cura[i]);
                     heroi->getInventario()->removeItem(cura[i]);
                     inv->setText(heroi->getInventario()->toString());
-                    vida->setText(std::to_string(heroi->getVida()));
+                    vida->setText(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima()));
                     break;
                 }
             }
@@ -294,7 +294,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
                     return Fase::GAME_OVER;
                 }
 
-                vida->setText(std::to_string(heroi->getVida()));
+                vida->setText(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima()));
             }
         }
 
