@@ -173,7 +173,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
             break;
         case 'q':
             running = false;
-            return Fase::END_GAME;
+            return Fase::LEVEL_COMPLETE;
             break;
         case 'e':
             // Verifica se o heroi colide com inimigos
@@ -291,7 +291,7 @@ unsigned Fase2::run(SpriteBuffer &screen)
                     draw(screen);
                     system("clear");
                     show(screen);
-                    return Fase::GAME_OVER;
+                    return Fase::LEVEL_COMPLETE;
                 }
 
                 vida->setText(heroi->vidaEmIs(heroi->getVida(), heroi->getVidaMaxima()));
